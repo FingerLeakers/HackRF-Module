@@ -7,7 +7,7 @@
 						<span class="pull-right" data-toggle="modal" data-target="#ModuleInfo">
 							&#8505;
 						</span>
-						<span style="padding-right: 10px;" class="pull-right" ng-click="getHackRF_Info();">
+						<span style="padding-right: 10px;" class="pull-right" ng-click="hackrfInfo();">
 							&#x21bb;
 						</span>
 					</h3>
@@ -17,9 +17,9 @@
 					<span class="label label-danger" ng-show="!foundBoard">HackRF Not Found</span>
 					<br/><br/>
 					<div>
-						<button class="btn btn-default" ng-disabled="installing" ng-hide="installed" ng-click="hackrf_Install();">Install Dependencies</button>
+						<button class="btn btn-default" ng-disabled="installing" ng-hide="installed" ng-click="hackrfInstall();">Install Dependencies</button>
 						<img src="/img/throbber.gif" ng-show="installing">
-						<button class="btn btn-default" ng-show="installed" ng-click="hackrf_Uninstall();">Remove Dependencies</button>
+						<button class="btn btn-default" ng-show="installed" ng-click="hackrfUninstall();">Remove Dependencies</button>
 					</div>
 				</div>
 			</div>
@@ -77,8 +77,8 @@
 							</div>
 							<div class="form-group">
 								<div class="col-sm-offset-2 col-sm-10">
-									<button type="submit" ng-hide="running" class="btn btn-success" ng-click="hackRF_Transfer();">Start</button>
-									<button type="submit" ng-show="running" class="btn btn-danger" ng-click="hackRF_Stop();">Stop</button>
+									<button type="submit" ng-hide="running" class="btn btn-success" ng-click="hackrfTransfer();">Start</button>
+									<button type="submit" ng-show="running" class="btn btn-danger" ng-click="hackrfStop();">Stop</button>
 								</div>
 							</div>
 						</div>
@@ -93,7 +93,7 @@
 				<div class="panel-heading">
 					<h3 class="panel-title">
 						Logging
-						<span style="padding-right: 10px;" class="pull-right" ng-click="getHackRFLog();">
+						<span style="padding-right: 10px;" class="pull-right" ng-click="hackrfLog();">
 							&#x21bb;
 						</span>
 					</h3>

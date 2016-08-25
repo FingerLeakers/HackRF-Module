@@ -6,10 +6,10 @@ registerController('HackRFController', ['$api', '$scope', '$interval', function(
     $scope.installling      = false;
 
 
-    $scope.getHackRF_Info = (function() {
+    $scope.hackrfInfo = (function() {
         $api.request({
             module: 'HackRF',
-            action: 'getHackRF_Info'
+            action: 'hackrfInfo'
         }, function(response) {
             $scope.foundBoard = response.foundBoard;
 
@@ -19,15 +19,15 @@ registerController('HackRFController', ['$api', '$scope', '$interval', function(
         });
     });
 
-    $scope.hackrf_Checker = (function() {
+    $scope.hackrfChecker = (function() {
         $api.request({
             module: 'HackRF',
-            action: 'hackrf_Checker'
+            action: 'hackrfChecker'
         }, function(response) {
             if(response.installed === true) {
                 $scope.installed = true;
                 $scope.installing = false;
-                $scope.getHackRF_Info();
+                $scope.hackrfInfo();
                 $interval.cancel($scope.install_interval);
             } else {
                 $scope.installed = false;
@@ -35,34 +35,34 @@ registerController('HackRFController', ['$api', '$scope', '$interval', function(
         });
     });
 
-    $scope.hackrf_Install = (function() {
+    $scope.hackrfInstall = (function() {
         $api.request({
             module: 'HackRF',
-            action: 'hackrf_Install'
+            action: 'hackrfInstall'
         }, function(response) {
             if(response.installing === true) {
                 $scope.installing = true;
                 $scope.install_interval = $interval(function(){
-                    $scope.hackrf_Checker();
+                    $scope.hackrfChecker();
                 }, 1000);
             }
         });
     });
 
-    $scope.hackrf_Uninstall = (function() {
+    $scope.hackrfUninstall = (function() {
         $api.request({
             module: 'HackRF',
-            action: 'hackrf_Uninstall'
+            action: 'hackrfUninstall'
         }, function(response) {
             if(response.success === true) {
-                $scope.hackrf_Checker();
-                $scope.getHackRF_Info();
+                $scope.hackrfChecker();
+                $scope.gethackrfInfo();
             }
         });
     });
 
-    $scope.hackrf_Checker();
-    $scope.getHackRF_Info();
+    $scope.hackrfChecker();
+    $scope.hackrfInfo();
 
     $scope.$on('$destroy', function() {
         $interval.cancel($scope.install_interval);
@@ -79,10 +79,10 @@ registerController('HackRFSettingsController', ['$api', '$scope', '$timeout', fu
     $scope.sampleRateError = false;
 
 
-    $scope.hackRF_Transfer = (function() {
+    $scope.hackrfTransfer = (function() {
         $api.request({
             module: 'HackRF',
-            action: 'doHackRF_Transfer',
+            action: 'hackrfTransfer',
             mode: $scope.mode,
             sampleRate: $scope.sampleRate,
             centerFreq: $scope.centerFreq,
@@ -102,10 +102,10 @@ registerController('HackRFSettingsController', ['$api', '$scope', '$timeout', fu
     });
 
     
-    $scope.hackRF_Stop = (function() {
+    $scope.hackrfStop = (function() {
         $api.request({
             module: 'HackRF',
-            action: 'doHackRF_Stop'
+            action: 'hackrfStop'
         }, function(response) {
             if (response.success === true) {
                 $scope.running = false;
@@ -117,10 +117,10 @@ registerController('HackRFSettingsController', ['$api', '$scope', '$timeout', fu
 registerController('HackRFLoggingController', ['$api', '$scope', function($api, $scope) {
     $scope.log = "";
 
-    $scope.getHackRFLog = (function() {
+    $scope.hackrfLog = (function() {
         $api.request({
             module: 'HackRF',
-            action: 'getHackRF_Log'
+            action: 'hackrfLog'
         }, function(response) {
             if (response.success === true) {
                 $scope.log = response.log;
@@ -128,6 +128,6 @@ registerController('HackRFLoggingController', ['$api', '$scope', function($api, 
         });
     });
 
-    $scope.getHackRFLog();
+    $scope.hackrfLog();
 
 }]);

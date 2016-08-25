@@ -5,31 +5,37 @@ class HackRF extends Module
     public function route()
     {
         switch ($this->request->action) {
-            case 'getHackRF_Info':
-                $this->getHackRF_Info();
+            case 'hackrfInfo':
+                $this->hackrfInfo();
                 break;
-            case 'hackrf_Install':
-                $this->hackrf_Install();
+
+            case 'hackrfInstall':
+                $this->hackrfInstall();
                 break;
-            case 'hackrf_Uninstall':
-                $this->hackrf_Uninstall();
+
+            case 'hackrfUninstall':
+                $this->hackrfUninstall();
                 break;
-            case 'hackrf_Checker':
-                $this->hackrf_Checker();
+
+            case 'hackrfChecker':
+                $this->hackrfChecker();
                 break;
-            case 'doHackRF_Transfer':
-                $this->doHackRF_Transfer();
+
+            case 'hackrfTransfer':
+                $this->hackrfTransfer();
                 break;
-            case 'doHackRF_Stop':
-                $this->doHackRF_Stop();
+
+            case 'hackrfStop':
+                $this->hackrfStop();
                 break;
-            case 'getHackRF_Log':
-                $this->getHackRF_Log();
+
+            case 'hackrfLog':
+                $this->hackrfLog();
                 break;
         }
     }
 
-    private function getHackRF_Info()
+    private function hackrfInfo()
     {
         exec('hackrf_info', $message);
         $message = implode("\n", $message);
@@ -44,7 +50,7 @@ class HackRF extends Module
         }
     }
 
-    private function hackrf_Checker()
+    private function hackrfChecker()
     {
         if ($this->checkDependency('hackrf_info')) {
             $this->response = array("installed" => true);
@@ -53,7 +59,7 @@ class HackRF extends Module
         }
     }
 
-    private function hackrf_Install()
+    private function hackrfInstall()
     {
         if ($this->getDevice() == 'tetra') {
             $this->execBackground('opkg update && opkg install hackrf-mini');    
@@ -64,13 +70,13 @@ class HackRF extends Module
         $this->response = array("installing" => true);
     }
 
-    private function hackrf_Uninstall()
+    private function hackrfUninstall()
     {
         exec('opkg remove hackrf-mini');
         $this->response = array("success" => true);
     }
 
-    private function doHackRF_Transfer()
+    private function hackrfTransfer()
     {
         $mode       = $this->request->mode;
         $sampleRate = $this->request->sampleRate;
@@ -87,9 +93,11 @@ class HackRF extends Module
 
         if ($mode == "rx") {
             $mode = "-r";
-        } else if ($mode == "tx") {
+        } else {
             $mode = "-t";
         }
+
+
 
         if (strpos($sampleRate, 'K') == true) {
             $sampleRate = str_replace('K', '0000', $sampleRate);
@@ -125,14 +133,14 @@ class HackRF extends Module
         $this->execBackground("$command > /tmp/hackrf_log 2>&1");
     }
 
-    private function doHackRF_Stop()
+    private function hackrfStop()
     {
         exec("killall hackrf_transfer");
 
         $this->response = array("success" => true);
     }
 
-    private function getHackRF_Log()
+    private function hackrfLog()
     {
         $log = file_get_contents('/tmp/hackrf_log');
 
