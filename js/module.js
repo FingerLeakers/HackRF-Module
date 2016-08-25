@@ -5,7 +5,6 @@ registerController('HackRFController', ['$api', '$scope', '$interval', function(
     $scope.installed        = false;
     $scope.installling      = false;
 
-
     $scope.hackrfInfo = (function() {
         $api.request({
             module: 'HackRF',

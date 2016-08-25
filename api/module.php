@@ -6,32 +6,32 @@ class HackRF extends Module
     {
         switch ($this->request->action) {
             case 'hackrfInfo':
-                $this->hackrfInfo();
-                break;
+            $this->hackrfInfo();
+            break;
 
             case 'hackrfInstall':
-                $this->hackrfInstall();
-                break;
+            $this->hackrfInstall();
+            break;
 
             case 'hackrfUninstall':
-                $this->hackrfUninstall();
-                break;
+            $this->hackrfUninstall();
+            break;
 
             case 'hackrfChecker':
-                $this->hackrfChecker();
-                break;
+            $this->hackrfChecker();
+            break;
 
             case 'hackrfTransfer':
-                $this->hackrfTransfer();
-                break;
+            $this->hackrfTransfer();
+            break;
 
             case 'hackrfStop':
-                $this->hackrfStop();
-                break;
+            $this->hackrfStop();
+            break;
 
             case 'hackrfLog':
-                $this->hackrfLog();
-                break;
+            $this->hackrfLog();
+            break;
         }
     }
 
@@ -46,7 +46,7 @@ class HackRF extends Module
             $this->response = array("foundBoard" => false);
         } else {
             $this->response = array("foundBoard" => true,
-                                    "availableHackRFs" => $message);
+                "availableHackRFs" => $message);
         }
     }
 
@@ -101,63 +101,62 @@ class HackRF extends Module
         } else if(!$filename) {
             $this->response = array("success" => false, "error" => "filename");
         } else {
+            if ($mode == "rx") {
+                $mode = "-r";
+            } else {
+                $mode = "-t";
+            }
+
+            if(strpos(strtolower($sampleRate), 'k') == true) {
+                $sampleRate = str_replace('k', '', $sampleRate);
+                $sampleRate = (int)$sampleRate * 1000;
+            } else if(strpos(strtolower($sampleRate), 'm') == true) {
+                $sampleRate = str_replace('m', '', $sampleRate);
+                $sampleRate = (int)$sampleRate * 1000000;
+            }
+
+            if(strpos(strtolower($centerFreq), 'khz') == true) {
+                $centerFreq = str_replace('khz', '', $centerFreq);
+                $centerFreq = floatval($centerFreq);
+                $centerFreq = $centerFreq * 1000;
+            } else if(strpos(strtolower($centerFreq), 'mhz') == true) {
+                $centerFreq = str_replace('mhz', '', $centerFreq);
+                $centerFreq = floatval($centerFreq);
+                $centerFreq = $centerFreq * 100000;
+            } else if(strpos(strtolower($centerFreq), 'ghz') == true) {
+                $centerFreq = str_replace('ghz', '', $centerFreq);
+                $centerFreq = floatval($centerFreq);
+                $centerFreq = $centerFreq * 10000000;
+            }
+
+            $command = "hackrf_transfer $mode $filename -f $centerFreq -s $sampleRate";
+
+            if ($amp) {
+                $command = $command . " -a 1";
+            }
+            if ($antPower) {
+                $command = $command . " -p 1";
+            }
+            if ($txRepeat) {
+                $command = $command . " -R";
+            }
+
+            if ($txIfCheckbox == true && $mode == '-t' && empty($txIfGain) == false) {
+                $command = $command . " -x $txIfGain";
+            }
+
+            if ($rxIfCheckbox == true && $mode == '-r' && empty($rxIfGain) == false) {
+                $command = $command . " -l $rxIfGain";
+            }
+
+            if ($rxBbCheckbox == true && $mode == '-r' && empty($rxBbGain) == false) {
+                $command = $command . " -g $rxBbGain";
+            }
+
+            unlink("/tmp/hackrf_log");
+            $this->execBackground("$command > /tmp/hackrf_log 2>&1");
             $this->response = array("success" => true);
         }
-
-        if ($mode == "rx") {
-            $mode = "-r";
-        } else {
-            $mode = "-t";
-        }
-
-        if(strpos(strtolower($sampleRate), 'k') == true) {
-            $sampleRate = str_replace('k', '', $sampleRate);
-            $sampleRate = (int)$sampleRate * 1000;
-        } else if(strpos(strtolower($sampleRate), 'm') == true) {
-            $sampleRate = str_replace('m', '', $sampleRate);
-            $sampleRate = (int)$sampleRate * 1000000;
-        }
-    
-        if(strpos(strtolower($centerFreq), 'khz') == true) {
-            $centerFreq = str_replace('khz', '', $centerFreq);
-            $centerFreq = floatval($centerFreq);
-            $centerFreq = $centerFreq * 1000;
-        } else if(strpos(strtolower($centerFreq), 'mhz') == true) {
-            $centerFreq = str_replace('mhz', '', $centerFreq);
-            $centerFreq = floatval($centerFreq);
-            $centerFreq = $centerFreq * 100000;
-        } else if(strpos(strtolower($centerFreq), 'ghz') == true) {
-            $centerFreq = str_replace('ghz', '', $centerFreq);
-            $centerFreq = floatval($centerFreq);
-            $centerFreq = $centerFreq * 10000000;
-        }
-
-        $command = "hackrf_transfer $mode $filename -f $centerFreq -s $sampleRate";
-
-        if ($amp) {
-            $command = $command . " -a 1";
-        }
-        if ($antPower) {
-            $command = $command . " -p 1";
-        }
-        if ($txRepeat) {
-            $command = $command . " -R";
-        }
-
-        if ($txIfCheckbox == true && $mode == '-t' && empty($txIfGain) == false) {
-            $command = $command . " -x $txIfGain";
-        }
-
-        if ($rxIfCheckbox == true && $mode == '-r' && empty($rxIfGain) == false) {
-            $command = $command . " -l $rxIfGain";
-        }
-
-        if ($rxBbCheckbox == true && $mode == '-r' && empty($rxBbGain) == false) {
-            $command = $command . " -g $rxBbGain";
-        }
-
-        unlink("/tmp/hackrf_log");
-        $this->execBackground("$command > /tmp/hackrf_log 2>&1");
     }
 
     private function hackrfStop()
@@ -169,7 +168,7 @@ class HackRF extends Module
 
     private function hackrfLog()
     {
-        $log = file_get_contents('/tmp/hackrf_log');
+        $log  = file_get_contents('/tmp/hackrf_log');
 
         $this->response = array("success" => true, "log" => $log);
     }
