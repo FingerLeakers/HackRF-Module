@@ -122,11 +122,11 @@ class HackRF extends Module
             } else if(strpos(strtolower($centerFreq), 'mhz') == true) {
                 $centerFreq = str_replace('mhz', '', $centerFreq);
                 $centerFreq = floatval($centerFreq);
-                $centerFreq = $centerFreq * 100000;
+                $centerFreq = $centerFreq * 1000000;
             } else if(strpos(strtolower($centerFreq), 'ghz') == true) {
                 $centerFreq = str_replace('ghz', '', $centerFreq);
                 $centerFreq = floatval($centerFreq);
-                $centerFreq = $centerFreq * 10000000;
+                $centerFreq = $centerFreq * 1000000000;
             }
 
             $command = "hackrf_transfer $mode $filename -f $centerFreq -s $sampleRate";
