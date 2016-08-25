@@ -74,7 +74,7 @@ class HackRF extends Module
     private function hackrfUninstall()
     {
         exec('opkg remove hackrf-mini');
-        unlink('/tmp/hackrf_log')
+        unlink('/tmp/hackrf_log');
         $this->response = array("success" => true);
     }
 

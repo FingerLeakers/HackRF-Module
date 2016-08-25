@@ -56,7 +56,7 @@ registerController('HackRFController', ['$api', '$scope', '$interval', function(
         }, function(response) {
             if(response.success === true) {
                 $scope.hackrfChecker();
-                $scope.gethackrfInfo();
+                $scope.hackrfInfo();
             }
         });
     });
