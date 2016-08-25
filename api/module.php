@@ -104,33 +104,35 @@ class HackRF extends Module
             $mode = "-t";
         }
 
-        if (strpos($sampleRate, 'K') == true) {
-            $sampleRate = str_replace('K', '0000', $sampleRate);
-        } else if (strpos($sampleRate, 'M') == true) {
-            $sampleRate = str_replace('M', '000000', $sampleRate);
-        } else if (strpos($sampleRate, 'k') == true) {
-            $sampleRate = str_replace('k', '0000', $sampleRate);
-        } else if (strpos($sampleRate, 'm') == true) {
-            $sampleRate = str_replace('m', '000000', $sampleRate);
+        if(strpos(strtolower($sampleRate), 'k') == true) {
+            $sampleRate = str_replace('k', '', $sampleRate);
+            $sampleRate = (int)$sampleRate * 1000;
+        } else if(strpos(strtolower($sampleRate), 'm') == true) {
+            $sampleRate = str_replace('m', '', $sampleRate);
+            $sampleRate = (int)$sampleRate * 1000000;
         }
-
-        if (strpos($centerFreq, 'KHz') == true) {
-            $centerFreq = str_replace('KHz', '0000', $centerFreq);
-        } else if (strpos($centerFreq, 'MHz') == true) {
-            $centerFreq = str_replace('MHz', '000000', $centerFreq);
-        } else if (strpos($centerFreq, 'khz') == true) {
-            $centerFreq = str_replace('khz', '0000', $centerFreq);
-        } else if (strpos($centerFreq, 'mhz') == true) {
-            $centerFreq = str_replace('mhz', '000000', $centerFreq);
+    
+        if(strpos(strtolower($centerFreq), 'khz') == true) {
+            $centerFreq = str_replace('khz', '', $centerFreq);
+            $centerFreq = floatval($centerFreq);
+            $centerFreq = $centerFreq * 1000;
+        } else if(strpos(strtolower($centerFreq), 'mhz') == true) {
+            $centerFreq = str_replace('mhz', '', $centerFreq);
+            $centerFreq = floatval($centerFreq);
+            $centerFreq = $centerFreq * 100000;
+        } else if(strpos(strtolower($centerFreq), 'ghz') == true) {
+            $centerFreq = str_replace('ghz', '', $centerFreq);
+            $centerFreq = floatval($centerFreq);
+            $centerFreq = $centerFreq * 10000000;
         }
 
         $command = "hackrf_transfer $mode $filename -f $centerFreq -s $sampleRate";
 
         if ($amp) {
-            $command = $command . " -a";
+            $command = $command . " -a 1";
         }
         if ($antPower) {
-            $command = $command . " -p";
+            $command = $command . " -p 1";
         }
         if ($txRepeat) {
             $command = $command . " -R";
@@ -148,10 +150,8 @@ class HackRF extends Module
             $command = $command . " -g $rxBbGain";
         }
 
-        echo($command);
-
         unlink("/tmp/hackrf_log");
-       // $this->execBackground("$command > /tmp/hackrf_log 2>&1");
+        $this->execBackground("$command > /tmp/hackrf_log 2>&1");
     }
 
     private function hackrfStop()
