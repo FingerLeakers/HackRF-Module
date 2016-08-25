@@ -78,13 +78,13 @@ class HackRF extends Module
 
     private function hackrfTransfer()
     {
-        $mode       = $this->request->mode;
-        $sampleRate = $this->request->sampleRate;
-        $centerFreq = $this->request->centerFreq;
-        $filename   = $this->request->filename;
-        $amp        = $this->request->amp;
-        $antPower   = $this->request->antpower;
-        $txRepeat   = $this->request->txRepeat;
+        $mode         = $this->request->mode;
+        $sampleRate   = $this->request->sampleRate;
+        $centerFreq   = $this->request->centerFreq;
+        $filename     = $this->request->filename;
+        $amp          = $this->request->amp;
+        $antPower     = $this->request->antpower;
+        $txRepeat     = $this->request->txRepeat;
         $txIfCheckbox = $this->request->txIfCheckbox;
         $txIfGain     = $this->request->txIfGain;
         $rxIfCheckbox = $this->request->rxIfCheckbox;
