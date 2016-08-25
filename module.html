@@ -75,6 +75,38 @@
 									<label class="checkbox-inline"><input type="checkbox" ng-model="antpower">Antenna Power</label>
 								</div>
 							</div>
+							<div class="form-group" ng-show="mode == 'tx'">
+								<label class="col-sm-2">TX Options</label>
+								<div class="col-sm-10">
+									<label class="checkbox-inline"><input type="checkbox" ng-model="txRepeat">Repeat Transmission</label>
+									<label class="checkbox-inline"><input type="checkbox" ng-model="txIfCheckbox">TX IF Gain</label>
+								</div>
+							</div>
+							<div class="form-group" ng-show="txIfCheckbox && mode == 'tx'">	
+								<label for="txIfGain" class="col-sm-2">TX IF Gain Amount</label>
+								<div class="col-sm-10">
+									<input type="textbox" class="form-control" id="txIfGain" ng-model="txIfGain">
+								</div>
+							</div>
+							<div class="form-group" ng-show="mode == 'rx'">
+								<label class="col-sm-2">RX Options</label>
+								<div class="col-sm-10">
+									<label class="checkbox-inline"><input type="checkbox" ng-model="rxBbCheckbox">RX BB Gain</label>
+									<label class="checkbox-inline"><input type="checkbox" ng-model="rxIfCheckbox">RX IF Gain</label>
+								</div>
+							</div>
+							<div class="form-group" ng-show="rxBbCheckbox && mode == 'rx'">	
+								<label for="rxBbGain" class="col-sm-2">RX BB Gain Amount</label>
+								<div class="col-sm-10">
+									<input type="textbox" class="form-control" id="rxBbGain" ng-model="rxBbGain">
+								</div>
+							</div>
+							<div class="form-group" ng-show="rxIfCheckbox && mode == 'rx'">	
+								<label for="rxIfGain" class="col-sm-2">RX IF Gain Amount</label>
+								<div class="col-sm-10">
+									<input type="textbox" class="form-control" id="rxIfGain" ng-model="rxIfGain">
+								</div>
+							</div>
 							<div class="form-group">
 								<div class="col-sm-offset-2 col-sm-10">
 									<button type="submit" ng-hide="running" class="btn btn-success" ng-click="hackrfTransfer();">Start</button>
@@ -157,8 +189,7 @@
 					<p>The sample rate is the amount of samples sent or receieved per second. It is not recommended to exceed 8 million samples due to computation limitations.</p>
 
 					<h3>Center Frequency</h3>
-					<p>This is the frequency that the HackRF will tune to once 
-started. Remember to keep the DC offset in mind!</p>
+					<p>This is the frequency that the HackRF will tune to once started. Remember to keep the DC offset in mind!</p>
 
 					<h3>Transceiever Mode</h3>
 					<p>The HackRF One is half-duplex, thus you must specify whether you want the HackRF to transmit(TX) or receieve(RX).</p>

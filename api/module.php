@@ -83,7 +83,14 @@ class HackRF extends Module
         $centerFreq = $this->request->centerFreq;
         $filename   = $this->request->filename;
         $amp        = $this->request->amp;
-        $antpower   = $this->request->antpower;
+        $antPower   = $this->request->antpower;
+        $txRepeat   = $this->request->txRepeat;
+        $txIfCheckbox = $this->request->txIfCheckbox;
+        $txIfGain     = $this->request->txIfGain;
+        $rxIfCheckbox = $this->request->rxIfCheckbox;
+        $rxBbCheckbox = $this->request->rxBbCheckbox;
+        $rxIfGain     = $this->request->rxIfGain;
+        $rxBbGain     = $this->request->rxBbGain;
 
         if (!$sampleRate) {
             $this->response = array("success" => false, "sampleRateError" => true);
@@ -96,8 +103,6 @@ class HackRF extends Module
         } else {
             $mode = "-t";
         }
-
-
 
         if (strpos($sampleRate, 'K') == true) {
             $sampleRate = str_replace('K', '0000', $sampleRate);
@@ -124,13 +129,29 @@ class HackRF extends Module
         if ($amp) {
             $command = $command . " -a";
         }
-
-        if ($antpower) {
+        if ($antPower) {
             $command = $command . " -p";
         }
+        if ($txRepeat) {
+            $command = $command . " -R";
+        }
+
+        if ($txIfCheckbox == true && $mode == '-t' && empty($txIfGain) == false) {
+            $command = $command . " -x $txIfGain";
+        }
+
+        if ($rxIfCheckbox == true && $mode == '-r' && empty($rxIfGain) == false) {
+            $command = $command . " -l $rxIfGain";
+        }
+
+        if ($rxBbCheckbox == true && $mode == '-r' && empty($rxBbGain) == false) {
+            $command = $command . " -g $rxBbGain";
+        }
+
+        echo($command);
 
         unlink("/tmp/hackrf_log");
-        $this->execBackground("$command > /tmp/hackrf_log 2>&1");
+       // $this->execBackground("$command > /tmp/hackrf_log 2>&1");
     }
 
     private function hackrfStop()

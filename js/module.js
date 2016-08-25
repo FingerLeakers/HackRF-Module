@@ -76,19 +76,32 @@ registerController('HackRFSettingsController', ['$api', '$scope', '$timeout', fu
     $scope.filename        = "";
     $scope.amp             = false;
     $scope.antpower        = false;
+    $scope.txRepeat        = false;
+    $scope.txIfCheckbox    = false;
+    $scope.rxIfCheckbox    = false;
+    $scope.rxBbCheckbox    = false;
+    $scope.txIfGain        = 0;
+    $scope.rxIfGain        = 0;
+    $scope.rxBbGain        = 0;
     $scope.sampleRateError = false;
-
 
     $scope.hackrfTransfer = (function() {
         $api.request({
             module: 'HackRF',
             action: 'hackrfTransfer',
-            mode: $scope.mode,
-            sampleRate: $scope.sampleRate,
-            centerFreq: $scope.centerFreq,
-            filename: $scope.filename,
-            amp: $scope.amp,
-            antpower: $scope.antpower
+            mode:         $scope.mode,
+            sampleRate:   $scope.sampleRate,
+            centerFreq:   $scope.centerFreq,
+            filename:     $scope.filename,
+            amp:          $scope.amp,
+            antpower:     $scope.antpower,
+            txRepeat:     $scope.txRepeat,
+            txIfCheckbox: $scope.txIfCheckbox,
+            txIfGain:     $scope.txIfGain,
+            rxIfCheckbox: $scope.rxIfCheckbox,
+            rxBbCheckbox: $scope.rxBbCheckbox,
+            rxIfGain:     $scope.rxIfGain,
+            rxBbGain:     $scope.rxBbGain
         }, function(response) {
             if(response.success === true) {
                 $scope.running = true;
