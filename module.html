@@ -71,7 +71,7 @@
 							<div class="form-group">
 								<label class="col-sm-2">Other Options</label>
 								<div class="col-sm-10">
-									<label class="checkbox-inline"><input type="checkbox" ng-model="amp">Enable TX/RX Amp</label>
+									<label class="checkbox-inline"><input type="checkbox" ng-model="amp">Enable RF Amp</label>
 									<label class="checkbox-inline"><input type="checkbox" ng-model="antpower">Antenna Power</label>
 								</div>
 							</div>
@@ -138,7 +138,7 @@
 	</div>
 
 
-	<div class="modal fade" id="ModuleInfo" tabindex="-1" role="dialog" aria-labelledby="ModuleInfoModal">
+	<div class="modal fade" id="ModuleInfo" tabindex="-1" role="dialog" aria-labelledBy="ModuleInfoModal">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -163,7 +163,7 @@
 		</div>
 	</div>
 
-	<div class="modal fade" id="HackRFInfo" tabindex="-1" role="dialog" aria-labelledby="HackRFInfoModal" ng-controller="HackRFController">
+	<div class="modal fade" id="HackRFInfo" tabindex="-1" role="dialog" aria-labelledBy="HackRFInfoModal" ng-controller="HackRFController">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -177,7 +177,7 @@
 		</div>
 	</div>
 
-	<div class="modal fade" id="ManageInfo" tabindex="-1" role="dialog" aria-labelledby="ManageInfoModal">
+	<div class="modal fade" id="ManageInfo" tabindex="-1" role="dialog" aria-labelledBy="ManageInfoModal">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -193,6 +193,18 @@
 
 					<h3>Transceiever Mode</h3>
 					<p>The HackRF One is half-duplex, thus you must specify whether you want the HackRF to transmit(TX) or receieve(RX).</p>
+
+					<h3>File Name</h3>
+					<p>This is the path to the file that you will record to, or transmit from. Linux special files such as /dev/null and /dev/zero can be used too.</p>
+
+					<h3>RF Amp & Antenna Power</h3>
+					<p>The <b>RF Amp</b> checkbox will enable or disable the RF amplifier. The <b>Antenna Power</b> checkbox will enable or disable power being delivered to the Antenna port (max. 50 mA at 3.3 V DC).</p>
+
+					<h3>RX IF Gain & RX BB Gain</h3>
+					<p><b>RX IF Gain</b> is controlled by supplying a value from <b>0dB</b> to <b>40dB</b>, with 8dB steps. <b>RX BB Gain</b> controls the baseband gain by supplying a value from <b>0dB</b> to <b>62dB</b>, with 2dB steps.</p>
+
+					<h3>Repeat Transmission & TX IF Gain</h3>
+					<p><b>Repeat Transmission</b> allows you to enable or disable replaying of the transfer. <b>TX IF Gain</b> is controlled by supplying a value from <b>0dB</b> to <b>47dB</b>, with 1dB steps.</p>
 				</div>
 			</div>
 		</div>
