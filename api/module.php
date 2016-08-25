@@ -66,6 +66,7 @@ class HackRF extends Module
         } else {
             $this->execBackground('opkg update && opkg install hackrf-mini --dest sd');
         }
+        exec('echo "Welcome to HackRF!" > /tmp/hackrf_log');
 
         $this->response = array("installing" => true);
     }
@@ -73,6 +74,7 @@ class HackRF extends Module
     private function hackrfUninstall()
     {
         exec('opkg remove hackrf-mini');
+        unlink('/tmp/hackrf_log')
         $this->response = array("success" => true);
     }
 
@@ -164,8 +166,6 @@ class HackRF extends Module
     private function hackrfLog()
     {
         $log = file_get_contents('/tmp/hackrf_log');
-
-        file_put_contents("/root/test", $log);
 
         $this->response = array("success" => true, "log" => $log);
     }
