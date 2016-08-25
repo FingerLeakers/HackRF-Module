@@ -84,6 +84,8 @@ registerController('HackRFSettingsController', ['$api', '$scope', '$timeout', fu
     $scope.rxIfGain        = 0;
     $scope.rxBbGain        = 0;
     $scope.sampleRateError = false;
+    $scope.filenameError   = false;
+    $scope.centerFreqError = false;
 
     $scope.hackrfTransfer = (function() {
         $api.request({
@@ -106,10 +108,22 @@ registerController('HackRFSettingsController', ['$api', '$scope', '$timeout', fu
             if(response.success === true) {
                 $scope.running = true;
             } else if(response.success === false) {
-                $scope.sampleRateError = true;
-                $timeout(function() {
-                    $scope.sampleRateError = false;
-                }, 3000);
+                if(response.error == "samplerate") {
+                    $scope.sampleRateError = true;
+                    $timeout(function() {
+                        $scope.sampleRateError = false;
+                    }, 3000);
+                } else if(response.error == "filename") {
+                    $scope.filenameError = true;
+                    $timeout(function() {
+                        $scope.filenameError = false;
+                    }, 3000);
+                } else if(response.error == "centerfreq") {
+                    $scope.centerFreqError = true;
+                    $timeout(function() {
+                        $scope.centerFreqError = false;
+                    }, 3000);
+                }
             }
         });
     });

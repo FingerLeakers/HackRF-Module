@@ -94,8 +94,12 @@ class HackRF extends Module
         $rxIfGain     = $this->request->rxIfGain;
         $rxBbGain     = $this->request->rxBbGain;
 
-        if (!$sampleRate) {
-            $this->response = array("success" => false, "sampleRateError" => true);
+        if(!$sampleRate) {
+            $this->response = array("success" => false, "error" => "samplerate");
+        } else if(!$centerFreq) {
+            $this->response = array("success" => false, "error" => "centerfreq");
+        } else if(!$filename) {
+            $this->response = array("success" => false, "error" => "filename");
         } else {
             $this->response = array("success" => true);
         }
