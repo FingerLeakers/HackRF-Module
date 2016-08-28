@@ -168,9 +168,13 @@ class HackRF extends Module
 
     private function hackrfLog()
     {
-        $log  = file_get_contents('/tmp/hackrf_log');
-
-        $this->response = array("success" => true, "log" => $log);
+        $log  = '/tmp/hackrf_log';
+        if(file_exists($log)) {
+            $log = file_get_contents($log);
+            $this->response = array("success" => true, "log" => $log);
+        } else {
+            $this->response = array("success" => true, "log" => "Welcome to HackRF!");
+        }
     }
 }
 
