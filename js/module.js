@@ -140,8 +140,9 @@ registerController('HackRFSettingsController', ['$api', '$scope', '$timeout', fu
     });
 }]);
 
-registerController('HackRFLoggingController', ['$api', '$scope', function($api, $scope) {
+registerController('HackRFLoggingController', ['$api', '$scope', '$interval', function($api, $scope, $interval) {
     $scope.log = "";
+    $scope.autoRefresh = false;
 
     $scope.hackrfLog = (function() {
         $api.request({
@@ -154,6 +155,21 @@ registerController('HackRFLoggingController', ['$api', '$scope', function($api, 
         });
     });
 
+    $scope.enableAutoRefresh = (function() {
+        $scope.autoRefresh = true;
+        $scope.refresh_interval = $interval(function(){
+            $scope.hackrfLog();
+        }, 1000);
+    });
+
+    $scope.disableAutoRefresh = (function() {
+        $scope.autoRefresh = false;
+        $interval.cancel($scope.refresh_interval);
+    });
+
     $scope.hackrfLog();
+    $scope.$on('$destroy', function() {
+        $interval.cancel($scope.refresh_interval);
+    });
 
 }]);
