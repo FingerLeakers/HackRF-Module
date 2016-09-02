@@ -14,7 +14,8 @@
 				</div>
 				<div class="panel-body">
 					<span class="label label-success" data-toggle="modal" data-target="#HackRFInfo" ng-show="foundBoard">HackRF Found</span>
-					<span class="label label-danger" ng-show="!foundBoard">HackRF Not Found</span>
+					<span class="label label-danger" ng-show="!foundBoard" ng-hide="!installed">HackRF Not Found</span>
+					<span class="label label-warning" ng-hide="installed">Dependencies Not Met</span>
 					<div class="pull-right" style="display: inline-block;">
 						<button class="btn btn-sm btn-default" ng-disabled="installing" ng-hide="installed" ng-click="hackrfInstall();">Install Dependencies</button>
 						<img src="/img/throbber.gif" ng-show="installing">
